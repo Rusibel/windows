@@ -9,50 +9,63 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "closeModal": function() { return /* binding */ closeModal; },
-/* harmony export */   "openModal": function() { return /* binding */ openModal; }
-/* harmony export */ });
-function closeModal(modalSelector) {
-  const modal = document.querySelector(modalSelector);
-  modal.style.display = 'none';
-  document.body.style.overflow = '';
-}
+function modal() {
+  function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
 
-function openModal(modalSelector) {
-  const modal = document.querySelector(modalSelector);
-  modal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
+  function openModal(modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector);
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
 
-function modal(triggerSelector, modalSelector) {
-  const modalTrigger = document.querySelectorAll(triggerSelector),
-        modal = document.querySelector(modalSelector);
-  modalTrigger.forEach(btn => {
-    btn.addEventListener('click', () => openModal(modalSelector));
-  });
-  modal.addEventListener('click', e => {
-    if (e.target === modal || e.target.parentElement.classList.contains('popup_close')) {
-      closeModal(modalSelector);
-      console.log(e.target);
+    if (modalTimerId) {
+      clearInterval(modalTimerId);
     }
-  });
-  document.addEventListener('keydown', e => {
-    if (e.code === "Escape" && modal.style.display == 'block') {
-      closeModal(modalSelector);
-    }
-  }); // function showModalByScroll() {
-  //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
-  //         openModal(modalSelector);
-  //         window.removeEventListener('scroll', showModalByScroll);
-  //     }
-  // }
-  // window.addEventListener('scroll', showModalByScroll);
+  }
+
+  const modalTimerId = setTimeout(() => openModal('.popup', modalTimerId), 60000);
+
+  function bindModal(triggerSelector, modalSelector) {
+    const modalTrigger = document.querySelectorAll(triggerSelector),
+          modal = document.querySelector(modalSelector);
+    modalTrigger.forEach(btn => {
+      btn.addEventListener('click', e => {
+        if (e.target) {
+          e.preventDefault;
+        }
+
+        openModal(modalSelector);
+      });
+    });
+    modal.addEventListener('click', e => {
+      if (e.target === modal || e.target.parentElement.classList.contains('popup_close')) {
+        closeModal(modalSelector);
+        console.log(e.target);
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.code === "Escape" && modal.style.display == 'block') {
+        closeModal(modalSelector);
+      }
+    }); // function showModalByScroll() {
+    //     if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight) {
+    //         openModal(modalSelector);
+    //         window.removeEventListener('scroll', showModalByScroll);
+    //     }
+    // }
+    // window.addEventListener('scroll', showModalByScroll);
+  }
+
+  bindModal('.header_btn_wrap_block', '.popup_engineer');
+  bindModal('.phone_link', '.popup');
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (modal);
-
-
+;
+/* harmony default export */ __webpack_exports__["default"] = (modal); // export {closeModal};
+// export {openModal};
 
 /***/ }),
 
