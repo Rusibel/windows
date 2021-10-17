@@ -1,3 +1,7 @@
+import $ from 'jquery';
+import 'slick-carousel';
+
+
 $(document).ready(function() {
     $('.glazing_slider').slick({
         infinite: true,
@@ -45,7 +49,7 @@ $(document).ready(function() {
             breakpoint: 1200,
             settings: {
                 slidesToShow: 3,
-                prevArrow: '<button class="prev arrow"></button>',
+                prevArrow: '<button class="prrrev arrow"></button>',
                 nextArrow: '<button class="next arrow"></button>',
                 slidesToScroll: 1
             }
