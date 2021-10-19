@@ -26,7 +26,7 @@ function modal(){
         modalTrigger.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 if (e.target){
-                    e.preventDefault;
+                    e.preventDefault();
                 }
                 
                 openModal(modalSelector);
