@@ -25,51 +25,56 @@ function forms(formsSelector) {
     bindPostData(item);
   });
 
+  function getDynamicInformation(selector) {
+    const input = selector.getElementsByName('user_phone');
+    input.addEventListener('input', () => {
+      if (input.value.match(/\D/g)) {
+        input.style.border = "1px solid red";
+      } else {
+        input.style.border = 'none';
+      }
+    });
+  }
+
   function bindPostData(form) {
+    getDynamicInformation(form.replace(/\.\'/g, ''));
     form.addEventListener('submit', e => {
       e.preventDefault();
-
-      function statusMessage(message) {
-        let status = document.createElement('div');
-        status.classList.add('statusMessage');
-        status.innerHTML = `
-            <p class="form_notice">${message}</p>
+      let status = message.loading;
+      let statusMessage = document.createElement('div');
+      statusMessage.classList.add('statusMessage');
+      statusMessage.innerHTML = `
+            <p class="form_notice">${status}</p>
             `;
-        form.append(statusMessage(message.loading));
-      }
-
+      form.insertAdjacentElement('beforeend', statusMessage);
       const formData = new FormData(form);
       const json = JSON.stringify(Object.fromEntries(formData.entries()));
       (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.postData)('http://localhost:3000/requests', json).then(data => {
-        console.log(data);
-        statusMessage.remove();
-        statusMessage(message.success); // message.loading.remove();
+        console.log(data); // statusMessage.remove();
+
+        showThanksModal(message.success);
+        form.insertAdjacentElement('beforeend', statusMessage);
       }).catch(() => {
-        form.insertAdjacentHTML('beforeend', message.failure);
+        // statusMessage.remove();
+        showThanksModal(message.failure);
+        form.insertAdjacentElement('beforeend', statusMessage);
       }).finally(() => {
         form.reset();
         statusMessage.remove();
       });
     });
-  }
 
-  function showThanksModal(message) {
-    (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModal)('.modal', modalTimerId);
-    const thanksModal = document.createElement('div');
-    thanksModal.classList.add('modal__dialog');
-    thanksModal.innerHTML = `
-            <div class="modal__content">
-                <div class="modal__close" data-close>×</div>
-                <div class="modal__title">${message}</div>
-            </div>
-        `;
-    document.querySelector('.modal').append(thanksModal);
-    setTimeout(() => {
-      thanksModal.remove();
-      prevModalDialog.classList.add('show');
-      prevModalDialog.classList.remove('hide');
-      (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closeModal)('.modal');
-    }, 4000);
+    function showThanksModal(message) {
+      const thanksModal = document.createElement('div');
+      thanksModal.classList.add('form_notice');
+      thanksModal.innerHTML = `
+                <p class="form_notice">${message}</p>
+            `;
+      form.insertAdjacentElement('beforeend', thanksModal);
+      setTimeout(() => {
+        thanksModal.remove();
+      }, 4000);
+    }
   }
 }
 
