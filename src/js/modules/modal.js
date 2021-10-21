@@ -1,21 +1,23 @@
+function closeModal(modalSelector) {
+    const modal = document.querySelector(modalSelector);
+    modal.style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+function openModal(modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector);
+
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+
+    if (modalTimerId) {
+        clearInterval(modalTimerId);
+    }
+}
+
 function modal(){
 
-    function closeModal(modalSelector) {
-        const modal = document.querySelector(modalSelector);
-        modal.style.display = 'none';
-        document.body.style.overflow = '';
-    }
 
-    function openModal(modalSelector, modalTimerId) {
-        const modal = document.querySelector(modalSelector);
-
-        modal.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-
-        if (modalTimerId) {
-            clearInterval(modalTimerId);
-        }
-    }
 
     const modalTimerId = setTimeout(() => openModal('.popup', modalTimerId), 60000);
 
@@ -59,5 +61,5 @@ function modal(){
     bindModal('.phone_link','.popup');
 };
 export default modal;
-// export {closeModal};
-// export {openModal};
+export {closeModal};
+export {openModal};
