@@ -8,6 +8,7 @@ window.addEventListener('DOMContentLoaded', function() {
     tabs('.glazing_block', '.glazing_content', '.glazing_slider', ['glazing', 'a.active']);
     tabs('.no_click', '.decoration_content > div > div', '.decoration_slider', ['after_click']);
     forms('form');
+    tabs('.balcon_icons_img', '.big_img > img', '.balcon_icons', ['do_image_more'], 'inline-block'); // > только прямые наследники с тегом img
 
 });
 

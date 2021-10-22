@@ -21,7 +21,7 @@ function modal(){
 
     const modalTimerId = setTimeout(() => openModal('.popup', modalTimerId), 60000);
 
-    function bindModal(triggerSelector, modalSelector) {
+    function bindModal(triggerSelector, modalSelector, modadlCloseSelector) {
         const modalTrigger = document.querySelectorAll(triggerSelector),
             modal = document.querySelector(modalSelector);
 
@@ -36,7 +36,7 @@ function modal(){
         });
 
         modal.addEventListener('click', (e) => {
-            if (e.target === modal || e.target.parentElement.classList.contains('popup_close') ) {
+            if (e.target === modal || e.target.parentElement.classList.contains(modadlCloseSelector)) {
                 closeModal(modalSelector);
                 console.log(e.target);
             }
@@ -57,8 +57,9 @@ function modal(){
         // window.addEventListener('scroll', showModalByScroll);
     }
 
-    bindModal('.header_btn_wrap_block', '.popup_engineer');
-    bindModal('.phone_link','.popup');
+    bindModal('.header_btn_wrap_block', '.popup_engineer', 'popup_close');
+    bindModal('.phone_link','.popup', 'popup_close');
+    bindModal('.glazing_price_btn','.popup_calc', 'popup_calc_close');
 };
 export default modal;
 export {closeModal};

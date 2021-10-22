@@ -1,125 +1,32 @@
 {
-  "menu": [],
-  "requests": [
-    {
-      "name": "cbncn",
-      "phone": "+7 (905) 655 4625",
-      "id": 1
-    },
-    {
-      "name": "лев",
-      "phone": "+7(999) 720 51 16",
-      "id": 2
-    },
-    {
-      "name": "Сергей",
-      "phone": "+7 (905) 655 4625",
-      "id": 3
-    },
-    {
-      "name": "Сергей",
-      "phone": "(905) 655-46-25",
-      "id": 4
-    },
-    {
-      "name": "xcv",
-      "phone": "+7(999) 720 51 16",
-      "id": 5
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 6
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 7
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 8
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 9
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 10
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 11
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 12
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 13
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 14
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 15
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 16
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 17
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 18
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "asdd",
-      "id": 19
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 20
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 21
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 22
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 23
-    },
-    {
-      "user_name": "ds",
-      "user_phone": "sdfafsdfds",
-      "id": 24
-    }
-  ]
-}
+    "menu": [
+  
+    ],
+    "requests": [
+      {
+        "name": "cbncn",
+        "phone": "+7 (905) 655 4625",
+        "id": 1
+      },
+      {
+        "name": "лев",
+        "phone": "+7(999) 720 51 16",
+        "id": 2
+      },
+      {
+        "name": "Сергей",
+        "phone": "+7 (905) 655 4625",
+        "id": 3
+      },
+      {
+        "name": "Сергей",
+        "phone": "(905) 655-46-25",
+        "id": 4
+      },
+      {
+        "name": "xcv",
+        "phone": "+7(999) 720 51 16",
+        "id": 5
+      }
+    ]
+  }

@@ -1,70 +1,63 @@
 import {postData} from '../services/services';
-import {closeModal, openModal} from './modal';
 
 function forms(formsSelector){
-    const forms = document.querySelectorAll(formsSelector);
-    const message = {
-        loading: 'идет отправка',
-        success: 'отправлено',
-        failure: 'ошибка'
-    };
+    const form = document.querySelectorAll('form'),
+    inputs = document.querySelectorAll('input'),
+    phoneInputs = document.querySelectorAll('input[name="user_phone"]');
 
-    forms.forEach(item => {
-        bindPostData(item);
+    phoneInputs.forEach(item => {
+        item.addEventListener('input', () => {
+            item.value = item.value.replace(/\D/, '');
+        });
     });
 
-    function bindPostData(form) {
-        form.addEventListener('submit', (e) => {
+    const message = {
+        loading: 'Загрузка...',
+        success: 'Спасибо! Скоро мы с вами свяжемся',
+        failure: 'Что-то пошло не так...'
+    };
+
+    const postData = async (url, data) => {
+
+        document.querySelector('.status').textContent = message.loading;
+        let res = await fetch(url, {
+            method: "POST",
+            body: data
+        });
+
+    return await res.text();
+    };
+
+    const clearInputs = () => {
+        inputs.forEach(item => {
+            item.value = '';
+        });
+    };
+
+    form.forEach(item => {
+        item.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            function statusMessage(message) {
-            let status = document.createElement('div');
-            status.classList.add('statusMessage');
-            status.innerHTML = `
-            <p class="form_notice">${message}</p>
-            `;
-            form.append(statusMessage(message.loading));
-            }
-        
-            const formData = new FormData(form);
+            let statusMessage = document.createElement('div');
+            statusMessage.classList.add('status');
+            item.appendChild(statusMessage);
 
-            const json = JSON.stringify(Object.fromEntries(formData.entries()));
+            const formData = new FormData(item);
 
-            postData('http://localhost:3000/requests', json)
-            .then(data => {
-                console.log(data);
-                statusMessage.remove();
-                statusMessage(message.success);
-                // message.loading.remove();
-            }).catch(() => {
-                form.insertAdjacentHTML('beforeend', message.failure);
-            }).finally(() => {
-                form.reset();
-                statusMessage.remove()
-            });
+            postData('assets/server.php', formData)
+                .then(res => {
+                    console.log(res);
+                    statusMessage.textContent = message.success;
+                })
+                .catch(() => statusMessage.textContent = message.failure)
+                .finally(() => {
+                    clearInputs();
+                    setTimeout(() => {
+                        statusMessage.remove();
+                    }, 5000);
+                });
         });
-    }
-
-    function showThanksModal(message) {
-        openModal('.modal', modalTimerId);
-
-        const thanksModal = document.createElement('div');
-        thanksModal.classList.add('modal__dialog');
-        thanksModal.innerHTML = `
-            <div class="modal__content">
-                <div class="modal__close" data-close>×</div>
-                <div class="modal__title">${message}</div>
-            </div>
-        `;
-        document.querySelector('.modal').append(thanksModal);
-        setTimeout(() => {
-            thanksModal.remove();
-            prevModalDialog.classList.add('show');
-            prevModalDialog.classList.remove('hide');
-            closeModal('.modal');
-        }, 4000);
-    }
-
+    });
 }
 
 export default forms;

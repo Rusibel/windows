@@ -10,67 +10,56 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../services/services */ "./src/js/services/services.js");
-/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modal */ "./src/js/modules/modal.js");
-
 
 
 function forms(formsSelector) {
-  const forms = document.querySelectorAll(formsSelector);
-  const message = {
-    loading: 'идет отправка',
-    success: 'отправлено',
-    failure: 'ошибка'
-  };
-  forms.forEach(item => {
-    bindPostData(item);
+  const form = document.querySelectorAll('form'),
+        inputs = document.querySelectorAll('input'),
+        phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+  phoneInputs.forEach(item => {
+    item.addEventListener('input', () => {
+      item.value = item.value.replace(/\D/, '');
+    });
   });
+  const message = {
+    loading: 'Загрузка...',
+    success: 'Спасибо! Скоро мы с вами свяжемся',
+    failure: 'Что-то пошло не так...'
+  };
 
-  function bindPostData(form) {
-    form.addEventListener('submit', e => {
+  const postData = async (url, data) => {
+    document.querySelector('.status').textContent = message.loading;
+    let res = await fetch(url, {
+      method: "POST",
+      body: data
+    });
+    return await res.text();
+  };
+
+  const clearInputs = () => {
+    inputs.forEach(item => {
+      item.value = '';
+    });
+  };
+
+  form.forEach(item => {
+    item.addEventListener('submit', e => {
       e.preventDefault();
-
-      function statusMessage(message) {
-        let status = document.createElement('div');
-        status.classList.add('statusMessage');
-        status.innerHTML = `
-            <p class="form_notice">${message}</p>
-            `;
-        form.append(statusMessage(message.loading));
-      }
-
-      const formData = new FormData(form);
-      const json = JSON.stringify(Object.fromEntries(formData.entries()));
-      (0,_services_services__WEBPACK_IMPORTED_MODULE_0__.postData)('http://localhost:3000/requests', json).then(data => {
-        console.log(data);
-        statusMessage.remove();
-        statusMessage(message.success); // message.loading.remove();
-      }).catch(() => {
-        form.insertAdjacentHTML('beforeend', message.failure);
-      }).finally(() => {
-        form.reset();
-        statusMessage.remove();
+      let statusMessage = document.createElement('div');
+      statusMessage.classList.add('status');
+      item.appendChild(statusMessage);
+      const formData = new FormData(item);
+      postData('assets/server.php', formData).then(res => {
+        console.log(res);
+        statusMessage.textContent = message.success;
+      }).catch(() => statusMessage.textContent = message.failure).finally(() => {
+        clearInputs();
+        setTimeout(() => {
+          statusMessage.remove();
+        }, 5000);
       });
     });
-  }
-
-  function showThanksModal(message) {
-    (0,_modal__WEBPACK_IMPORTED_MODULE_1__.openModal)('.modal', modalTimerId);
-    const thanksModal = document.createElement('div');
-    thanksModal.classList.add('modal__dialog');
-    thanksModal.innerHTML = `
-            <div class="modal__content">
-                <div class="modal__close" data-close>×</div>
-                <div class="modal__title">${message}</div>
-            </div>
-        `;
-    document.querySelector('.modal').append(thanksModal);
-    setTimeout(() => {
-      thanksModal.remove();
-      prevModalDialog.classList.add('show');
-      prevModalDialog.classList.remove('hide');
-      (0,_modal__WEBPACK_IMPORTED_MODULE_1__.closeModal)('.modal');
-    }, 4000);
-  }
+  });
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (forms);
@@ -108,7 +97,7 @@ function openModal(modalSelector, modalTimerId) {
 function modal() {
   const modalTimerId = setTimeout(() => openModal('.popup', modalTimerId), 60000);
 
-  function bindModal(triggerSelector, modalSelector) {
+  function bindModal(triggerSelector, modalSelector, modadlCloseSelector) {
     const modalTrigger = document.querySelectorAll(triggerSelector),
           modal = document.querySelector(modalSelector);
     modalTrigger.forEach(btn => {
@@ -121,7 +110,7 @@ function modal() {
       });
     });
     modal.addEventListener('click', e => {
-      if (e.target === modal || e.target.parentElement.classList.contains('popup_close')) {
+      if (e.target === modal || e.target.parentElement.classList.contains(modadlCloseSelector)) {
         closeModal(modalSelector);
         console.log(e.target);
       }
@@ -139,8 +128,9 @@ function modal() {
     // window.addEventListener('scroll', showModalByScroll);
   }
 
-  bindModal('.header_btn_wrap_block', '.popup_engineer');
-  bindModal('.phone_link', '.popup');
+  bindModal('.header_btn_wrap_block', '.popup_engineer', 'popup_close');
+  bindModal('.phone_link', '.popup', 'popup_close');
+  bindModal('.glazing_price_btn', '.popup_calc', 'popup_calc_close');
 }
 
 ;
@@ -158,7 +148,7 @@ function modal() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-const tabs = (tabsSelector, tabsContentSelector, tabsParentSelector, activeClass) => {
+const tabs = (tabsSelector, tabsContentSelector, tabsParentSelector, activeClass, display = 'block') => {
   let tabs = document.querySelectorAll(tabsSelector),
       tabsContent = document.querySelectorAll(tabsContentSelector),
       tabsParent = document.querySelector(tabsParentSelector);
@@ -176,7 +166,7 @@ const tabs = (tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
   }
 
   function showTabContent(i = 0) {
-    tabsContent[i].style.display = 'block';
+    tabsContent[i].style.display = display;
     tabs[i].classList.add(...activeClass);
   }
 
@@ -14334,6 +14324,7 @@ window.addEventListener('DOMContentLoaded', function () {
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_block', '.glazing_content', '.glazing_slider', ['glazing', 'a.active']);
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.no_click', '.decoration_content > div > div', '.decoration_slider', ['after_click']);
   (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])('form');
+  (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons_img', '.big_img > img', '.balcon_icons', ['do_image_more'], 'inline-block'); // > только прямые наследники с тегом img
 });
 }();
 /******/ })()
