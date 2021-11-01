@@ -2,7 +2,6 @@ const tabs = (tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
         let tabs = document.querySelectorAll(tabsSelector),
             tabsContent = document.querySelectorAll(tabsContentSelector),
             tabsParent = document.querySelector(tabsParentSelector);
-    console.log(...activeClass);
     function hideTabContent() {
         
         tabsContent.forEach(item => {
@@ -39,14 +38,10 @@ const tabs = (tabsSelector, tabsContentSelector, tabsParentSelector, activeClass
                     showTabContent(i);
                 }
                 
-                // console.log((target == item) || (target.parentElement == item));
+
             });
             }
 
-        // console.log(target.parentElement);
-
-        // console.log(target.classList.contains(tabsSelector.slice(1)));
-        // console.log(target.parentElement.classList.contains(tabsSelector.slice(1)));
     });
 
 

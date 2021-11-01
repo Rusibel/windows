@@ -1,15 +1,11 @@
 import {postData} from '../services/services';
+import checkNumInputs from './checkNumInputs.js';
 
-function forms(formsSelector){
+function forms(state){
     const form = document.querySelectorAll('form'),
-    inputs = document.querySelectorAll('input'),
-    phoneInputs = document.querySelectorAll('input[name="user_phone"]');
+          inputs = document.querySelectorAll('input');
 
-    phoneInputs.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/\D/, '');
-        });
-    });
+    checkNumInputs('input[name="user_phone"]');
 
     const message = {
         loading: 'Загрузка...',
@@ -43,9 +39,15 @@ function forms(formsSelector){
             item.appendChild(statusMessage);
 
             const formData = new FormData(item);
-
+            if (item.getAttribute('data-calc') === "end") {
+                for (let key in state) {
+                    formData.append(key, state[key]);
+                }
+            }
+            console.log(formData);
             postData('assets/server.php', formData)
-                .then(res => {
+                .then(res => {                   
+                    console.log(state);
                     console.log(res);
                     statusMessage.textContent = message.success;
                 })
