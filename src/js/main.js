@@ -3,6 +3,7 @@ import modal from './modules/modal';
 import tabs from './modules/tabs';
 import forms from './modules/forms';
 import changeModalState from './modules/changeModalState';
+import timer from './modules/timer';
 
 window.addEventListener('DOMContentLoaded', function() {
     "use strict";
@@ -16,6 +17,7 @@ window.addEventListener('DOMContentLoaded', function() {
     tabs('.balcon_icons_img', '.big_img > img', '.balcon_icons', ['do_image_more'], 'inline-block'); // > только прямые наследники с тегом img
     forms(modalState);
     modal(modalState);
+    timer('.timer1', '2022-06-11');
 });
 
 
