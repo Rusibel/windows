@@ -3,7 +3,8 @@ function modal(state){
         const modalTrigger = document.querySelectorAll(triggerSelector),
               modal = document.querySelector(modalSelector),
               windows = document.querySelectorAll('[data-modal]'),
-              close = document.querySelector(modalCloseSelector);
+              close = document.querySelector(modalCloseSelector),
+              scroll = calcScroll();
 
         modalTrigger.forEach(btn => {
             btn.addEventListener('click', (e) => {
@@ -15,14 +16,10 @@ function modal(state){
                 });
                 modal.style.display = 'block';
                 document.body.style.overflow = 'hidden';
+                document.body.style.marginRight = `${scroll}px`;
             });
         });
 
-        close.addEventListener('click', () => {
-            modal.style.display = "none";
-            document.body.style.overflow = "";
-            // document.body.classList.remove('modal-open');
-        });
 
         modal.addEventListener('click', (e) => {
             if (e.target === modal && closeClickOverlay) {
@@ -31,7 +28,20 @@ function modal(state){
                 });
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
+                document.body.style.overflow = ""; 
+                document.body.style.marginRight = `0px`;
             }
+        });
+        
+        close.addEventListener('click', () => {
+            windows.forEach(item => {
+                item.style.display = 'none';
+            });
+
+            modal.style.display = "none";
+            document.body.style.overflow = "";
+            document.body.style.marginRight = `0px`;
+            // document.body.classList.remove('modal-open');
         });
 
         document.addEventListener('keydown', (e) => {
@@ -41,6 +51,8 @@ function modal(state){
                 });
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
+                document.body.style.overflow = "";
+                document.body.style.marginRight = `0px`;
             }
         });
     }
@@ -69,6 +81,21 @@ function modal(state){
             }
     } 
 
+    function calcScroll() {
+        let div = document.createElement('div');
+
+        div.style.width = '50px';
+        div.style.height = '50px';
+        div.style.overflowY = 'scroll';
+        div.style.visibility = 'hidden';
+
+        document.body.appendChild(div);
+        let scrollWidth = div.offsetWidth - div.clientWidth;
+        div.remove();
+
+        return scrollWidth;
+    }
+
     document.querySelector('.popup_calc_button').addEventListener('mouseover', () => {
         checkInputsData('.popup_calc_button','.popup_calc_profile', '.popup_calc_profile_close', false, state.form, state.width, state.height);
     });
@@ -79,8 +106,8 @@ function modal(state){
 
     
 
-    bindModal('.header_btn_wrap_block', '.popup_engineer', '.popup_close');
-    bindModal('.phone_link','.popup', '.popup_close');
+    bindModal('.header_btn_wrap_block', '.popup_engineer', '.popup_engineer .popup_close');
+    bindModal('.phone_link','.popup', '.popup .popup_close');
 
 
     bindModal('.glazing_price_btn','.popup_calc', '.popup_calc_close');
