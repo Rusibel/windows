@@ -51,13 +51,7 @@ const changeModalState = state => {
         }
 
         console.log(state);
-      }); // 
-      //     if(elem.length > 1){
-      //         state[prop] = i;
-      //     } else {
-      //         state[prop] = item.value;
-      //     }
-      //     console.log(state);
+      });
     });
   }
 
@@ -108,7 +102,8 @@ __webpack_require__.r(__webpack_exports__);
 
 function forms(state) {
   const form = document.querySelectorAll('form'),
-        inputs = document.querySelectorAll('input');
+        inputs = document.querySelectorAll('input'),
+        windows = document.querySelectorAll('[data-modal]');
   (0,_checkNumInputs_js__WEBPACK_IMPORTED_MODULE_1__["default"])('input[name="user_phone"]');
   const message = {
     loading: 'Загрузка...',
@@ -145,15 +140,22 @@ function forms(state) {
         }
       }
 
-      console.log(formData);
       postData('assets/server.php', formData).then(res => {
-        console.log(state);
         console.log(res);
         statusMessage.textContent = message.success;
+
+        for (let key in state) {
+          if (state.hasOwnProperty(key)) {
+            delete state[key];
+          }
+        }
       }).catch(() => statusMessage.textContent = message.failure).finally(() => {
         clearInputs();
         setTimeout(() => {
           statusMessage.remove();
+          windows.forEach(item => {
+            item.style.display = 'none';
+          });
         }, 5000);
       });
     });
@@ -172,7 +174,7 @@ function forms(state) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-function modal() {
+function modal(state) {
   function bindModal(triggerSelector, modalSelector, modalCloseSelector, closeClickOverlay = true) {
     const modalTrigger = document.querySelectorAll(triggerSelector),
           modal = document.querySelector(modalSelector),
@@ -222,11 +224,34 @@ function modal() {
     }, time);
   }
 
+  let errorMessage = document.createElement('div');
+  errorMessage.classList.add('status');
+  document.querySelector('.popup_calc_content').append(errorMessage);
+  document.querySelector('.popup_calc_profile_content').append(errorMessage);
+
+  function checkInputsData(triggerSelector, modalSelector, modalCloseSelector, closeClickOverlay, examProps1, examProps2, examProps3 = true) {
+    if (examProps1 && examProps2 && examProps3) {
+      bindModal(triggerSelector, modalSelector, modalCloseSelector, closeClickOverlay);
+      document.querySelector(triggerSelector).textContent = 'Далее';
+      document.querySelector(triggerSelector).classList.remove('status');
+    } else {
+      document.querySelector(triggerSelector).textContent = 'Сделайте свой выбор';
+      document.querySelector(triggerSelector).classList.add('status');
+      document.querySelector(triggerSelector).removeEventListener('click');
+    }
+  }
+
+  document.querySelector('.popup_calc_button').addEventListener('mouseover', () => {
+    checkInputsData('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false, state.form, state.width, state.height);
+  });
+  document.querySelector('.popup_calc_profile_button').addEventListener('mouseover', () => {
+    checkInputsData('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false, state.type, state.profile);
+  });
   bindModal('.header_btn_wrap_block', '.popup_engineer', '.popup_close');
   bindModal('.phone_link', '.popup', '.popup_close');
-  bindModal('.glazing_price_btn', '.popup_calc', '.popup_calc_close');
-  bindModal('.popup_calc_button', '.popup_calc_profile', '.popup_calc_profile_close', false);
-  bindModal('.popup_calc_profile_button', '.popup_calc_end', '.popup_calc_end_close', false);
+  bindModal('.glazing_price_btn', '.popup_calc', '.popup_calc_close'); // bindModal('.popup_calc_button','.popup_calc_profile', '.popup_calc_profile_close', false);
+  // bindModal('.popup_calc_profile_button','.popup_calc_end', '.popup_calc_end_close', false);
+
   showModalByTime('.popup', 60000);
 }
 
@@ -14416,12 +14441,12 @@ window.addEventListener('DOMContentLoaded', function () {
 
   let modalState = {};
   (0,_modules_changeModalState__WEBPACK_IMPORTED_MODULE_4__["default"])(modalState);
-  (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])();
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.glazing_block', '.glazing_content', '.glazing_slider', ['glazing', 'a.active']);
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.no_click', '.decoration_content > div > div', '.decoration_slider', ['after_click']);
   (0,_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])('.balcon_icons_img', '.big_img > img', '.balcon_icons', ['do_image_more'], 'inline-block'); // > только прямые наследники с тегом img
 
   (0,_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(modalState);
+  (0,_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])(modalState);
 });
 }();
 /******/ })()

@@ -37,13 +37,6 @@ const changeModalState = (state) => {
 
                 console.log(state);
             });
-            // 
-            //     if(elem.length > 1){
-            //         state[prop] = i;
-            //     } else {
-            //         state[prop] = item.value;
-            //     }
-            //     console.log(state);
         });  
     }
 
@@ -52,7 +45,6 @@ const changeModalState = (state) => {
     bindActionToElem('input', windowHeight, 'height');
     bindActionToElem('change', windowType, 'type');
     bindActionToElem('change', windowProfile, 'profile');
-
 
 };
 

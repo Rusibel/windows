@@ -3,8 +3,8 @@ import checkNumInputs from './checkNumInputs.js';
 
 function forms(state){
     const form = document.querySelectorAll('form'),
-          inputs = document.querySelectorAll('input');
-
+          inputs = document.querySelectorAll('input'),
+          windows = document.querySelectorAll('[data-modal]');
     checkNumInputs('input[name="user_phone"]');
 
     const message = {
@@ -44,18 +44,24 @@ function forms(state){
                     formData.append(key, state[key]);
                 }
             }
-            console.log(formData);
             postData('assets/server.php', formData)
                 .then(res => {                   
-                    console.log(state);
                     console.log(res);
                     statusMessage.textContent = message.success;
+                    for(let key in state) {
+                        if(state.hasOwnProperty(key)) {
+                            delete state[key];
+                        }
+                    }
                 })
                 .catch(() => statusMessage.textContent = message.failure)
                 .finally(() => {
                     clearInputs();
                     setTimeout(() => {
                         statusMessage.remove();
+                        windows.forEach(item => {
+                            item.style.display = 'none';
+                        });
                     }, 5000);
                 });
         });

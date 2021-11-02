@@ -972,6 +972,11 @@ textarea:focus {
 }
 
 .popup_calc_button {
+  display: block;
+  margin-left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  margin-top: 1rem;
   padding: 1rem 5rem;
 }
 
@@ -1762,6 +1767,11 @@ textarea:focus {
   }
 
   .popup_calc_button {
+    display: block;
+    margin-left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    margin-top: 1rem;
     padding: 1rem 5rem;
   }
 
