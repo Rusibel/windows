@@ -4,6 +4,7 @@ import tabs from './modules/tabs';
 import forms from './modules/forms';
 import changeModalState from './modules/changeModalState';
 import timer from './modules/timer';
+import images from './modules/images';
 
 window.addEventListener('DOMContentLoaded', function() {
     "use strict";
@@ -18,6 +19,7 @@ window.addEventListener('DOMContentLoaded', function() {
     forms(modalState);
     modal(modalState);
     timer('.timer1', '2022-06-11');
+    images();
 });
 
 
